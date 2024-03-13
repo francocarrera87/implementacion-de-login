@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const messageModel = require('./dao/models/message');
 const ItemsManager = require('./dao/dbManagers/ItemManager');
 const manager = new ItemsManager();
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 mongoose.connect('mongodb+srv://hola1234:hola1234@clustercoder.k5czlhe.mongodb.net/ecommerce').then(() => {
     console.log('Conectado a la red de Atlas');
@@ -18,6 +20,15 @@ const io = socketIO(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'perrito', 
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ 
+        mongoUrl: 'mongodb://localhost:27017/usuarios',
+        ttl: 24 * 60 * 60 // Duración de la sesión en segundos (un día)
+    })
+}));
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -77,6 +88,12 @@ app.get('/table', async (req, res) => {
 
 app.get('/chat', (req, res) => {
     res.render('chat', {});
+});
+app.get('/login', (req, res) => {
+    res.render('login', {}); 
+});
+app.get('/registro', (req, res) => {
+    res.render('registro', {}); 
 });
 
 const PORT = process.env.PORT || 8080;
