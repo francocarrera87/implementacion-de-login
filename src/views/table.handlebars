@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 5%;
+            padding: 5%;
+            background-color: #f0f0f0;
+            border-radius: 15px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin: 1em 0;
+            border-collapse: collapse;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+        th, td {
+            padding: 0.5em;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        #itemForm {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+        #itemForm input {
+            flex-grow: 1;
+            margin-right: 1em;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        #createItemButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        #createItemButton:hover {
+            background-color: #45a049;
+        }
+                #pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1em;
+        }
+
+        #pagination a {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #pagination a:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Users Table</h1>
+
+    <table id="itemTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo</th>
+                <th>Género</th>
+            </tr>
+        </thead>
+    <div id="pagination">
+    {{#unless isFirstPage}}
+        <a href="?page={{prevPage}}">Anterior</a>
+    {{/unless}}
+    {{#unless isLastPage}}
+        <a href="?page={{nextPage}}">Siguiente</a>
+    {{/unless}}
+</div>
+
+
+        <form action="/table/search" method="get">
+    <input type="text" name="query" placeholder="Buscar usuarios">
+    <input type="submit" value="Buscar">
+</form>
+
+        <tbody id="tbodyId">
+            {{#each items}}
+                <tr>
+                    <td>{{this._id}}</td>
+                    <td>{{this.nombre}}</td>
+                    <td>{{this.apellido}}</td>
+                    <td>{{this.correo}}</td>
+                    <td>{{this.genero}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/realtime.js"></script>
+</body>
+</html>
